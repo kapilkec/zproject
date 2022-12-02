@@ -1,4 +1,4 @@
- import { useEffect } from "react"
+//  import { useEffect } from "react"
 import {Link} from "react-router-dom"
 import { auth } from "../config/firebase"
 import { useAuthState } from "react-firebase-hooks/auth"
@@ -21,18 +21,18 @@ export default function Navbar () {
 
                 <div className="topnav-right">  
                     <div className="Elements">
-                    <a> <Link to ="/">Home</Link> </a>
-                    {!user ? (<a> <Link to = "login">Login</Link> </a>):
-                             (<a> <Link to = "createPost">CreatePosts</Link> </a>)
+                      <Link to ="/">Home</Link>  
+                    {!user ? (  <Link to = "login">Login</Link>  ):
+                             (  <Link to = "createPost">CreatePosts</Link>  )
                     }
                     
                     { user &&
-                    <a>{user?.displayName    }</a>  } 
+                     <span className="userName">{user?.displayName    }</span>  } 
                     </div>
                     { user &&
-                    <div className="Profile">
-                        <button onClick={signUserOut}>Logout</button>
-                    </div>}
+                      
+                        <div className="logOut" onClick={signUserOut}>Logout</div>
+                     }
                 </div> 
         </div>
        
