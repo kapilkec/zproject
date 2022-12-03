@@ -5,6 +5,7 @@ import React from 'react';
  import Login from './Pages/Login';
  import CreatePost from './Pages/Create-post/CreatePost';
 import Navbar from './components/Navbar';
+import MyPost from './Pages/myPost';
 function App() {
   return (
     <div className="App">
@@ -15,6 +16,7 @@ function App() {
               <Route path="/" element={<Main/>} />
               <Route path="/login" element={<Login/>} />
               <Route path="/createPost" element={<CreatePost/>} />
+              <Route path ="/mypost" element={<MyPost/>} />
 
           </Routes>
        </Router>

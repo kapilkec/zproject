@@ -94,7 +94,7 @@ export default function DisplayPost(props: any) {
                    await  getDownloadURL(item).then((url) => {
                             
                              setImageUrl(url);
-                            console.log("url"+url);
+                             
                     })
                 })
             }

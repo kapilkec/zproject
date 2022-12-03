@@ -47,13 +47,21 @@ export const Comment = (props:  postIdforComment) => {
     const uploadComment = async (e: any)=>{
         console.log("updating comment");
         e.preventDefault();
+        const obj = {
+            userId: user?.uid,
+            postId:props.postId ,
+            comment: newcomment,
+            commentPersonName:user?.displayName ,
+        }
        
         try{
-            const newDoc =  await addDoc(commentRef,{
-                 userId: user?.uid,
-                 postId:props.postId ,
-                 comment: newcomment,
-                 commentPersonName:user?.displayName ,
+            const newDoc =  await addDoc(commentRef,
+                { ...obj }
+             ).then( ()=> {
+                setComment("");
+               
+                 getComments();
+                
              })
             }
          catch(err){
@@ -70,19 +78,22 @@ export const Comment = (props:  postIdforComment) => {
             }
 
             <form onSubmit={uploadComment}>
-            <input  onChange={updateComment} placeholder="write a comment..." />
+            <input  onChange={updateComment}  value={newcomment} placeholder="write a comment..." />
             <button type="submit">Post</button>
            
             </form>
               
             {commentFlag  && commentsCount && commentsCount.map( (comment) => {
                 return (
-                   <div key={comment?.comment.length}>
-                    { comment.comment}
-                    {comment.commentPersonName}
+                   <div  >
+                   
+                    @{comment.commentPersonName}
+                     
+                    <div>{ comment.comment}</div>
+                    
                     </div>
                 )
-            })},<></>
+            })}, 
             
         </div>
     )

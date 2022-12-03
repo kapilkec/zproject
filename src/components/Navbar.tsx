@@ -22,10 +22,11 @@ export default function Navbar () {
                 <div className="topnav-right">  
                     <div className="Elements">
                       <Link to ="/">Home</Link>  
-                    {!user ? (  <Link to = "login">Login</Link>  ):
-                             (  <Link to = "createPost">CreatePosts</Link>  )
+
+                    {!user ? (  <Link to = "login">Login</Link>    ):
+                             (   <Link to = "createPost">CreatePosts</Link> )
                     }
-                    
+                    {user &&  <Link to ="/mypost">Mypost</Link> }
                     { user &&
                      <span className="userName">{user?.displayName    }</span>  } 
                     </div>

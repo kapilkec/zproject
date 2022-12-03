@@ -37,6 +37,7 @@ export default function CreateForm() {
         const imagref = ref(storage, "postImages/"+postId+"/img");
        await  uploadBytes(imagref,PostImage).then(
             ()=>{
+
                 console.log("image uploaded");
             }
         )
@@ -68,7 +69,8 @@ export default function CreateForm() {
 
        }).then(async ()=>{
         alert("post added succesfully");
-         uploadImage(timestamp as string);
+        alert("image uploading please wait a moment")
+        await uploadImage(timestamp as string);
          navigate("/");
         
        })
