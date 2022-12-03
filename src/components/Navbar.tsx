@@ -15,7 +15,7 @@ export default function Navbar () {
         
         <div className="topNav"> 
                 <div className="topnav-left">
-                <span className="Title">InstaBOok</span>
+                <span className="Title">KEC-MEDIA</span>
 
                 </div>
 

@@ -4,6 +4,10 @@ import {  auth, db } from "../config/firebase"
 import { addDoc, collection, getDocs, query,doc, where, deleteDoc } from "firebase/firestore"
  import { useAuthState } from "react-firebase-hooks/auth"
 import { useEffect, useState } from "react"
+import  { storage } from "../config/firebase"
+import { ref, uploadBytes, listAll, getDownloadURL} from "firebase/storage"
+import {Comment } from "./Comment"
+
 
 interface Props {
     post : Post;
@@ -16,9 +20,10 @@ interface Like{
 export default function DisplayPost(props: any) {
     
     const [user] = useAuthState(auth);
-    const {title, description,username,id}= props;
+    const {title, description,username,id, getImageId}= props;
     const likedRef = collection(db, "likes")
     const likesDoc = query(likedRef,where("postId","==",id))
+    const [imageUrl,setImageUrl] = useState(String);
 
     const [likesCount, updateLikes ]= useState<Like[] | null>(null);
 
@@ -34,8 +39,11 @@ export default function DisplayPost(props: any) {
 
     useEffect( ()=> {
         getLikes()
+         
     },[])
-    console.log(props.id);
+    
+     
+   
 
     const addLike = async ()=>{
         try{
@@ -72,16 +80,47 @@ export default function DisplayPost(props: any) {
             }
      }
 
+     const getUrl =async ()=> {
+        // console.log("getImageId");
+        const refer = "postImages/"+getImageId+"/";
+         
+        const getImageref = ref(storage, refer)
+           await listAll(getImageref).then(
+            (response) => {
+                // console.log(response);
+                response.items.forEach(async (item) => {
+                    const a = item.storage;
+                    
+                   await  getDownloadURL(item).then((url) => {
+                            
+                             setImageUrl(url);
+                            console.log("url"+url);
+                    })
+                })
+            }
+        )
+    }
+    useEffect(()=>{
+        getUrl();
+    },[] )
+    
+    
+
     return(
-        <div className="Post">
-            <div className="UserName">{username}</div>
+        <div   className="Post">
+            <div className="UserName">@{username}</div>
             <div className="title">{ title} </div>
+            <img src={imageUrl}   style={{width:"400px"}} />
+
             <div className="description"> { description}</div>
+
             <div className="likeButton"><button onClick={hasUserLiked?  removeLike:addLike}>{hasUserLiked? <>&#128078;</> : <>&#128077;</>} </button></div>
             {likesCount  != null && 
             <div className="likes">likes:{ likesCount.length}</div>
             }
-            <hr/>
+
+            <Comment postId={id} />
+             <hr/>
         </div>
     )
 }
