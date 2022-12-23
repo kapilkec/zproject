@@ -1,4 +1,6 @@
 import { useState } from "react"
+import Friends from "../components/Friends";
+import  Followss from "../components/Followss";
 import ProfilePic from "../components/ProfilePic"
 import "../Styles/profile.css"
 import MyPost from "./myPost"
@@ -22,12 +24,12 @@ export default function Profile(){
                  { currentElement == 0 &&
                     <MyPost/>
                  }
-                 {/* { currentElement == 1 &&
-                    <MyPost/>
+                 { currentElement == 1 &&
+                    <Friends/>
                  }
                  { currentElement == 2 &&
-                    <MyPost/>
-                 } */}
+                    <Followss/>
+                 }
 
              </div>
         </div>

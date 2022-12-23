@@ -1,4 +1,4 @@
-//  import { useEffect } from "react"
+import "../Styles/ProfilePic.css"
  
 import { auth, storage } from "../config/firebase"
 import { useAuthState } from "react-firebase-hooks/auth"
@@ -64,7 +64,7 @@ export default function ProfilePic(props:Props ) {
     return(
         
         <div className=""> 
-                      <img src={imageUrl}  style={{width:"100px",height:"100px",zIndex:"1"}} />
+                      <img className="ProfilePic" src={imageUrl}   />
                       {props.editProfile &&
                             <div>
                             {showUpdateProfile &&

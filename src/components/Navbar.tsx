@@ -27,29 +27,38 @@ export default function Navbar () {
         
         <div className="topNav"> 
                 <div className="topnav-left">
-                <span className="Title">KEC-MEDIA</span>
+                 KecMedia
 
                 </div>
 
                 <div className="topnav-right">  
-                    <ProfilePic editProfile={false}/>
-                    { user &&
-                    <> <span className="userName">{(user?.displayName+"").split(" ")[0]}</span>
-                        {/* <img src={imageUrl}   /> */}
-                      </> } 
+                    <div className="ProfileComponent">
+                        <ProfilePic editProfile={false}/>
+                        { user &&
+                        <> <span className="userName">{(user?.displayName+"").split(" ")[0]}</span>
+                            <span className="UserId">@{user?.displayName}</span>
+                            </> } 
+                        <div className="UserDetails">
+                            <div className="Posts"><span>20</span><br></br><span className="name">Posts</span></div>
+                            <div className="Following"><span>20</span><br></br><span className="name">Following</span></div>
+                            <div className="Followers"><span>20</span><br></br><span className="name">Followers</span></div>
+
+                        </div>
+                    </div>
                     <div className="Elements">
-                      <Link to ="/">Home</Link>  
+                      <Link to ="/"><i className="fa-solid fa-house"></i>&nbsp;&nbsp;&nbsp;&nbsp;Feed</Link>  
 
                     {!user ? (  <Link to = "login">Login</Link>    ):
-                             (   <Link to = "createPost">CreatePosts</Link> )
+                             (   <Link to = "createPost"><i className="CreatePostIcon fa-solid fa-square-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;CreatePosts</Link> )
                     }
-                    {user &&  <Link to ="profile">Myprofile</Link> }
+                    {user &&  <Link to ="profile"><i className="fa-solid fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;Account</Link> }
                   
-                    </div>
                     { user &&
                       
-                        <div className="logOut" onClick={signUserOut}>Logout</div>
-                     }
+                      <div className="logOut" onClick={signUserOut}><i className="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;&nbsp;&nbsp;Logout</div>
+                    }
+                    </div>
+                   
                      
                  </div> 
         </div>
