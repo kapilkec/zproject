@@ -9,12 +9,13 @@ export interface Post{
     title: String;
     userId: String;
     username: String;
+    
 
 }
 
 export default function MyPost() {
     const [Myposts, setMyPostLists] = useState<Post[] | null>([]);
-
+   
     const [user] = useAuthState(auth);
     const postRef = collection(db, "posts")
     const userId = user? user.uid : "none";
@@ -27,8 +28,8 @@ export default function MyPost() {
     }
     useEffect( () => {
         getData();
-    },[])
-
+    },[user])
+     
     return(
         <div style={{textAlign:"center"}}>  
         { Myposts?.map((post) => (

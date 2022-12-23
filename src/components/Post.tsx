@@ -1,41 +1,46 @@
- import { Post} from "../Pages/Main"
+ 
 import "../Styles/Post.css"
 import {  auth, db } from "../config/firebase"
-import { addDoc, collection, getDocs, query,doc, where, deleteDoc } from "firebase/firestore"
+import {   collection, getDocs, query,doc, where, deleteDoc, setDoc, addDoc, updateDoc, getDoc } from "firebase/firestore"
  import { useAuthState } from "react-firebase-hooks/auth"
 import { useEffect, useState } from "react"
 import  { storage } from "../config/firebase"
-import { ref, uploadBytes, listAll, getDownloadURL} from "firebase/storage"
+import { ref,   listAll, getDownloadURL} from "firebase/storage"
 import {Comment } from "./Comment"
+import { DeletePost } from "./DeltePost"
+import Followers from "./Followers"
 
 
-interface Props {
-    post : Post;
-}
+ 
 interface Like{
     userId: String;
-    likeId: String;
+    
 }
 
 export default function DisplayPost(props: any) {
     
     const [user] = useAuthState(auth);
-    const {title, description,username,id, getImageId}= props;
-    const likedRef = collection(db, "likes")
-    const likesDoc = query(likedRef,where("postId","==",id))
+    const {title, description,username,id,userId ,getImageId, updateHomePage,likes}= props;
+    
+    
+    const reff = doc(db, "posts", id)
     const [imageUrl,setImageUrl] = useState(String);
 
     const [likesCount, updateLikes ]= useState<Like[] | null>(null);
 
     const getLikes = async ()=> {
-        const data = await getDocs(likesDoc)
-          updateLikes(data.docs.map( (doc) => ( {userId:doc.data().userId , likeId: doc.id})))
+        const docSnap = await getDoc(reff);
+        
+        const getlikesList = docSnap.data() 
+        const likeList = (getlikesList && getlikesList.likes)
+          updateLikes(likeList)
         
     }
 
     const hasUserLiked = likesCount?.find((like)=>(
         like.userId === user?.uid
     ))
+    // console.log("has user likes"+hasUserLiked)
 
     useEffect( ()=> {
         getLikes()
@@ -43,16 +48,36 @@ export default function DisplayPost(props: any) {
     },[])
     
      
-   
 
     const addLike = async ()=>{
+         
+
+
         try{
-           const newDoc =  await addDoc(likedRef,{
-                userId: user?.uid,
-                postId:id ,
-            })
+        //    const newDoc =  await addDoc(likedRef,{
+        //         userId: user?.uid,
+        //         postId:id ,
+        //     })
+
+
+        //testing
+       
+        const newLike =likesCount ? [...likesCount,{userId:user?.uid }] : [ {userId:user?.uid} ]
+        await updateDoc(reff, {
+            "likes":  newLike
+             
+        })
+        
+          .then(function() {
+            console.log("like updated");
+          });
+
+
+
+              
+
             if(user){
-            updateLikes( likesCount ? [...likesCount, {userId:user?.uid, likeId:newDoc.id}] : [{userId:user?.uid, likeId:newDoc.id}] )}
+            updateLikes( newLike as Like[])}
             }
         catch(err){
             console.log("error in adding likes"+err);
@@ -61,16 +86,19 @@ export default function DisplayPost(props: any) {
 
      const removeLike =async ( ) => {
             try{
-                const likeToDeleteQuery =  query(likedRef,
-                    where("postId","==", id), where("userId","==",user?.uid))
-                const likeToDeletedata = await getDocs( likeToDeleteQuery );
-                const likeId = likeToDeletedata.docs[0].id
-                const likeToDelete = doc(db, "likes", likeId)
+                
+                const newLike =likesCount &&  likesCount.filter( (ob) => {
+                    return ob.userId != user?.uid
+                })
+               
+                await updateDoc(reff, {
+                    "likes":  newLike
+                     
+                })
 
-                await deleteDoc(likeToDelete);
                  if(user){
                     if(likesCount)
-                          updateLikes(  likesCount.filter((like) => like.likeId !== likeId) )
+                          updateLikes( newLike as Like[] )
             }
 
 
@@ -89,11 +117,12 @@ export default function DisplayPost(props: any) {
             (response) => {
                 // console.log(response);
                 response.items.forEach(async (item) => {
-                    const a = item.storage;
+                     
                     
                    await  getDownloadURL(item).then((url) => {
                             
                              setImageUrl(url);
+                             updateHomePage();
                              
                     })
                 })
@@ -104,11 +133,19 @@ export default function DisplayPost(props: any) {
         getUrl();
     },[] )
     
-    
+    console.log();
 
     return(
         <div   className="Post">
-            <div className="UserName">@{username}</div>
+
+            <div className="UserName">
+                @{username}
+                {userId !== user?.uid &&  
+                    <Followers FollowId={ userId } userName={ username }  globalFollowersChange = {props. globalFollowersChange }/>
+                }
+                
+                
+            </div>
             <div className="title">{ title} </div>
             <img src={imageUrl}   style={{width:"400px"}} />
 
@@ -118,8 +155,10 @@ export default function DisplayPost(props: any) {
             {likesCount  != null && 
             <div className="likes">likes:{ likesCount.length}</div>
             }
-
+            
             <Comment postId={id} />
+            {userId == user?.uid && <DeletePost  PostId={id} updateHomePage = {updateHomePage} getImageId = {getImageId} />}
+            
              <hr/>
         </div>
     )

@@ -66,6 +66,8 @@ export default function CreateForm() {
             username: user?.displayName,
             userId: user?.uid,
             getImageId : timestamp,
+            likes:[],
+            comments:[]
 
        }).then(async ()=>{
         alert("post added succesfully");

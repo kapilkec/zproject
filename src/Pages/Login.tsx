@@ -14,7 +14,7 @@ export default  function Login () {
         navigate("/");
     }
     return(
-        <div>
+        <div style={{marginLeft:"50%"}}>
             <p>Login with google</p>
             <button onClick={signinWithGoogle}>Login</button>
         </div>

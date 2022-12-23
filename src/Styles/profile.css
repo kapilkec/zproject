@@ -1,0 +1,13 @@
+.Profile{
+    margin-left: 30%;
+    
+}
+
+.components{
+    
+    display: flex;
+    gap:20px;
+    font-size: larger;
+}
+
+ 

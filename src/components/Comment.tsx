@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { useEffect, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { boolean } from "yup";
@@ -9,14 +9,14 @@ export interface postIdforComment{
 interface CommentBox {
     commentPersonName:String;
     comment:String;
-    id:string;
+    userId:string;
 }
 
 export const Comment = (props:  postIdforComment) => {
     const [commentsCount, updatecommentsCount]= useState <CommentBox[] | null>(null);
-    const commentRef = collection(db, "comments");
+    const commentRef = doc(db, "posts", props.postId+"")
     
-    const commentsDoc = query(commentRef,where("postId","==",props.postId))
+    
 
     const [newcomment, setComment] = useState(String);
     const [user] = useAuthState(auth);
@@ -29,12 +29,17 @@ export const Comment = (props:  postIdforComment) => {
     }
 
     const updateComment = (e: any)=> {
+        
         setComment(e.target.value);
         console.log(e.target.value)
     }
     const getComments = async ()=> {
-        const data = await getDocs(commentsDoc)
-          updatecommentsCount(data.docs.map( (doc) => ( {commentPersonName:doc.data().commentPersonName , comment: doc.data().comment, id: doc.id})))
+        const docSnap = await getDoc(commentRef);
+        
+        const getCommentsList = docSnap.data() 
+        const commentList = (getCommentsList && getCommentsList.comments)
+           
+          updatecommentsCount( commentList)
         
     }
 
@@ -49,15 +54,19 @@ export const Comment = (props:  postIdforComment) => {
         e.preventDefault();
         const obj = {
             userId: user?.uid,
-            postId:props.postId ,
+             
             comment: newcomment,
             commentPersonName:user?.displayName ,
         }
        
         try{
-            const newDoc =  await addDoc(commentRef,
-                { ...obj }
-             ).then( ()=> {
+            const newComments =commentsCount ? [...commentsCount,obj] : [obj  ]
+            await updateDoc(commentRef, {
+                "comments":  newComments
+                 
+            })
+           
+              .then( ()=> {
                 setComment("");
                
                  getComments();

@@ -1,5 +1,8 @@
 .Post{
     
     text-align: center;
-    margin :0 20%;
+   /* margin-left: 40%; */
+   width:550px;
+   background-color: aquamarine;
+
 }
