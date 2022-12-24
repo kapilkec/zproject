@@ -4,12 +4,14 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { boolean } from "yup";
 import { auth, db } from "../config/firebase";
 export interface postIdforComment{
-    postId:String
+    postId:String;
+    showWriteComment:Boolean;
 }
 interface CommentBox {
     commentPersonName:String;
     comment:String;
     userId:string;
+    
 }
 
 export const Comment = (props:  postIdforComment) => {
@@ -77,33 +79,41 @@ export const Comment = (props:  postIdforComment) => {
              console.log("error in adding likes"+err);
          }
     }
+    //upload comment end
 
 
     return(
         <div>
-        <div className="comments" ><i  onClick={setCommentFlage1}  className="fa-regular fa-message fa-2x"></i></div>
-        {commentsCount  != null && 
-            <div className="comments">comments:{ commentsCount.length}</div>
+        
+        { props.showWriteComment != true && <>
+            <div className="commentComponent">
+            <div className="commentIcon" ><i  onClick={setCommentFlage1}  className="fa-regular fa-comment likeIcon" /></div>
+            {commentsCount  != null && 
+                <div className="comments">comments:{commentsCount.length}</div>
+                }
+            </div>
+                </>
+        }
+            {props.showWriteComment == true && 
+                <form onSubmit={uploadComment}>
+                    <input  onChange={updateComment}  value={newcomment} placeholder="write a comment..." />
+                    <button type="submit">Post</button>           
+                </form>
             }
-
-            <form onSubmit={uploadComment}>
-            <input  onChange={updateComment}  value={newcomment} placeholder="write a comment..." />
-            <button type="submit">Post</button>
-           
-            </form>
-              
-            {commentFlag  && commentsCount && commentsCount.map( (comment) => {
-                return (
-                   <div  >
-                   
-                    @{comment.commentPersonName}
-                     
-                    <div>{ comment.comment}</div>
+            {props.showWriteComment != true &&  <>
+                {commentFlag  && commentsCount && commentsCount.map( (comment) => {
+                    return (
+                    <div  >
                     
-                    </div>
-                )
-            })}, 
-            
+                        @{comment.commentPersonName}
+                        
+                        <div>{ comment.comment}</div>
+                        
+                        </div>
+                    )
+                })}
+                </>
+            }
         </div>
     )
 }

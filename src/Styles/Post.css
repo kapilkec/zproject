@@ -1,8 +1,47 @@
 .Post{
-    
-    text-align: center;
-   /* margin-left: 40%; */
-   width:550px;
-   background-color: aquamarine;
+   width:500px;
+   background-color: rgb(243, 243, 243);
+    padding: 20px 20px;
+}
+ 
 
+/* .userName{
+    display: block;
+} */
+ 
+.TopBar .a{
+    float: left;
+    height: 50px;
+}
+.TopBar .topDetail{
+     width: 100px;
+}
+.TopBar{
+    height: 50px;
+}
+.TopBar .rightTop{
+    float: right;
+}
+
+.PostImage{
+    width: 500px;
+    border-radius:3%;
+    height: 350px;
+}
+
+.BottomElement{
+    display: flex;
+    gap:30px;
+}
+
+.CommentElement .commentComponent{
+    display: flex;
+}
+
+.likeIcon{
+    border: none;
+    font-size:25px;
+}
+.LikeElement{
+    display: flex;
 }

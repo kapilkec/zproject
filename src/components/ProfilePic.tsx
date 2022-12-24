@@ -7,17 +7,21 @@ import { useEffect, useState } from "react";
  
 import { useForm } from "react-hook-form";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
-
+import { url } from "inspector";
+ 
+ 
 
 interface Props{
-    editProfile:Boolean
+    editProfile:Boolean;
+    id:String;
 }
 
 export default function ProfilePic(props:Props ) {
-    const  [user] = useAuthState(auth);
+     
   
     const [showUpdateProfile, setUpdateProfile] =  useState(false)
     const [imageUrl,setImageUrl] = useState(String);
+    const [ImageFound, SetImageFound] = useState(true);
     const {handleSubmit} = useForm()
     const [profilePic, setProfilePic] = useState<File | null>(null);
     const setImage = (e: any)=>{
@@ -34,7 +38,7 @@ export default function ProfilePic(props:Props ) {
 
     const setNewProfile = async () => {
     
-       const imagref = ref(storage, "UserProfile/"+user?.uid);
+       const imagref = ref(storage, "UserProfile/"+props.id);
     if(profilePic){
         await  uploadBytes(imagref,profilePic).then(
             ()=>{
@@ -48,23 +52,29 @@ export default function ProfilePic(props:Props ) {
     }
 
     const getUrl =async ()=> {
-        const starsRef = ref(storage, 'UserProfile/'+user?.uid );
+         if(props.id.length < 2){
+            return;
+         }
+        const starsRef = ref(storage, 'UserProfile/'+props.id);
         getDownloadURL(starsRef)
             .then((url) => {
                     setImageUrl(url)
+                    SetImageFound(true)
                     console.log("image  url fetched"+url)
             })
             .catch( (er) => {
+                
                 console.log("error in fetching profile img"+er)
             })
     }
     useEffect(()=>{
         getUrl();
-    },[user] )
+    },[props.id] )
     return(
         
         <div className=""> 
-                      <img className="ProfilePic" src={imageUrl}   />
+                     
+                      <img className="ProfilePic" src= { imageUrl ? imageUrl :  require('../Images/profile.jpg')} alt="user"  />
                       {props.editProfile &&
                             <div>
                             {showUpdateProfile &&

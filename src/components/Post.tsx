@@ -137,28 +137,46 @@ export default function DisplayPost(props: any) {
 
     return(
         <div   className="Post">
-
-            <div className="UserName">
-                @{username}
-                {userId !== user?.uid &&  
-                    <Followers FollowId={ userId } userName={ username }  globalFollowersChange = {props. globalFollowersChange }/>
-                }
+            <div className="TopBar">
                 
-                
+                    <div className="a dp">
+                        {/* <img src="" alt="dp" /> */}
+                        &#128078;
+                    </div>
+                    <div className="a topDetail">
+                        <div className=" UserName">
+                            @{username}
+                                                                
+                        </div>
+                        <div className=" title">{ title} </div>
+                    </div>
+                 
+                <div className="rightTop">
+                    {userId !== user?.uid &&  
+                                <Followers FollowId={ userId } userName={ username }  globalFollowersChange = {props. globalFollowersChange }/>
+                            }  
+                </div>
             </div>
-            <div className="title">{ title} </div>
-            <img src={imageUrl}   style={{width:"400px"}} />
-
-            <div className="description"> { description}</div>
-
-            <div className="likeButton"><button onClick={hasUserLiked?  removeLike:addLike}>{hasUserLiked? <>&#128078;</> : <>&#128077;</>} </button></div>
-            {likesCount  != null && 
-            <div className="likes">likes:{ likesCount.length}</div>
+            {imageUrl && 
+                <img src={imageUrl}   className="PostImage" />
             }
+
             
-            <Comment postId={id} />
+            <div className="BottomElement">
+                    <div className="LikeElement">
+                                <div className="likeButton"><button  className="likeIcon" onClick={hasUserLiked?  removeLike:addLike}>{!hasUserLiked? <i className="fa-regular fa-heart"></i> : <i className="fa-solid fa-heart"></i>} </button></div>
+                            
+                                {likesCount  != null && 
+                                <div className="likes">likes:{ likesCount.length}</div>
+                               }
+                    </div>
+                 <div className="CommentElement">
+                       <Comment postId={id} showWriteComment={false}/>
+                </div>
+            </div>
             {userId == user?.uid && <DeletePost  PostId={id} updateHomePage = {updateHomePage} getImageId = {getImageId} />}
-            
+            <div className="description"> { description}</div>
+            <Comment postId={id} showWriteComment={true}/>
              <hr/>
         </div>
     )

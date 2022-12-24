@@ -1,5 +1,5 @@
 //  import { useEffect } from "react"
-import {Link} from "react-router-dom"
+import {Link, NavLink} from "react-router-dom"
 import { auth, storage } from "../config/firebase"
 import { useAuthState } from "react-firebase-hooks/auth"
 import "../Styles/Navbar.css";
@@ -9,18 +9,22 @@ import { boolean } from "yup";
 import { useForm } from "react-hook-form";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import ProfilePic from "./ProfilePic";
+import { render } from "@testing-library/react";
 
 export default function Navbar () {
      
     const  [user] = useAuthState(auth);
     
 
-
+    const [userid, setuserId]  = useState<String | null>()
     const signUserOut = async () =>{
         await signOut(auth);
     }
 
-     
+    useEffect( ()=>{
+        console.log("ar"+user?.uid);
+        setuserId(user?.uid)
+    },[user]);
     
      
     return(
@@ -33,7 +37,7 @@ export default function Navbar () {
 
                 <div className="topnav-right">  
                     <div className="ProfileComponent">
-                        <ProfilePic editProfile={false}/>
+                        <ProfilePic editProfile={false} id = {userid+""}/>
                         { user &&
                         <> <span className="userName">{(user?.displayName+"").split(" ")[0]}</span>
                             <span className="UserId">@{user?.displayName}</span>
@@ -46,12 +50,12 @@ export default function Navbar () {
                         </div>
                     </div>
                     <div className="Elements">
-                      <Link to ="/"><i className="fa-solid fa-house"></i>&nbsp;&nbsp;&nbsp;&nbsp;Feed</Link>  
+                      <NavLink to ="/" ><i className="fa-solid fa-house"></i>&nbsp;&nbsp;&nbsp;&nbsp;Feed</NavLink>  
 
-                    {!user ? (  <Link to = "login">Login</Link>    ):
-                             (   <Link to = "createPost"><i className="CreatePostIcon fa-solid fa-square-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;CreatePosts</Link> )
+                    {!user ? (  <NavLink to = "login">Login</NavLink>    ):
+                             (   <NavLink to = "createPost"><i className="CreatePostIcon fa-solid fa-square-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;CreatePosts</NavLink> )
                     }
-                    {user &&  <Link to ="profile"><i className="fa-solid fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;Account</Link> }
+                    {user &&  <NavLink to ="profile"   className={({ isActive }) => (isActive ? 'active' : 'inactive')} ><i className="fa-solid fa-user "></i>&nbsp;&nbsp;&nbsp;&nbsp;Account</NavLink> }
                   
                     { user &&
                       
