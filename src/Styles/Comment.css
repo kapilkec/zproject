@@ -1,0 +1,53 @@
+.commentsCount {
+    margin-top:4px;
+}
+ 
+.commentIcon{
+    margin-top: 1px;
+    
+}
+
+.CommentInput{
+    border-radius: 25px;
+    border: none;
+    height:25px;
+    width:70%;
+    padding-left: 20px;
+    
+}
+.commentButton{
+    border:none;
+    vertical-align: middle;
+}
+
+
+.commentButton .commentIcon {
+    height: 20px;
+    width: 20px; 
+   cursor: pointer;
+    
+}
+
+.Showtext{
+    cursor: pointer;
+    display: inline-block
+}
+
+.SingleComment{
+    display: flex;
+    /* border-bottom: 0.5px solid rgb(169, 166, 166); */
+}
+
+.CommentedUserName{
+   text-align: center;
+   
+}
+
+.CommentUserDp{
+   margin-top: 5px;
+   margin-right: 5px;
+}
+
+.UserComment{
+    font-weight: 100;
+}

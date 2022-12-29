@@ -1,23 +1,32 @@
 .Post{
-   width:500px;
+   /* width:85%; */
    background-color: rgb(243, 243, 243);
-    padding: 20px 20px;
+    padding: 10px 20px;
+     
+    margin-bottom: 10px;
+    border-radius: 3%;
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 600;
 }
  
-
-/* .userName{
-    display: block;
-} */
  
-.TopBar .a{
+.TopBar .a,.UserName{
     float: left;
     height: 50px;
+    /* text-align: center; */
+    vertical-align: middle;
 }
-.TopBar .topDetail{
-     width: 100px;
+ 
+.OthersProfile{
+    margin-top: 5px;
 }
+ 
+ 
+
 .TopBar{
+    text-align:center;
     height: 50px;
+   
 }
 .TopBar .rightTop{
     float: right;
@@ -26,12 +35,13 @@
 .PostImage{
     width: 500px;
     border-radius:3%;
-    height: 350px;
+    height: 300px;
 }
 
 .BottomElement{
     display: flex;
     gap:30px;
+    border-bottom: 1px solid rgb(205, 205, 205);
 }
 
 .CommentElement .commentComponent{
@@ -41,7 +51,31 @@
 .likeIcon{
     border: none;
     font-size:25px;
+    padding:0;
+    cursor: pointer;
 }
 .LikeElement{
     display: flex;
+}
+
+.likes{
+    margin-top:3px;
+}
+
+.descript {
+    width:70%;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    font-style:normal;
+    font-weight:550;
+}
+
+.title{
+     text-align: left;
+     margin-bottom:0;
+    /* padding: 0; */
+}
+
+.UserName{
+    font-weight: 900;
 }

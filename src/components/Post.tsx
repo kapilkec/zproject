@@ -9,6 +9,9 @@ import { ref,   listAll, getDownloadURL} from "firebase/storage"
 import {Comment } from "./Comment"
 import { DeletePost } from "./DeltePost"
 import Followers from "./Followers"
+import Profile from "../Pages/profile"
+import ProfilePic from "./ProfilePic"
+import OthersProfile from "./OthersProfile"
 
 
  
@@ -20,9 +23,14 @@ interface Like{
 export default function DisplayPost(props: any) {
     
     const [user] = useAuthState(auth);
-    const {title, description,username,id,userId ,getImageId, updateHomePage,likes}= props;
-    
-    
+    const {title, description,username,id,userId ,getImageId, updateHomePage,likes, removePost}= props;
+     
+    //for comment update
+    const[renderCommentComponent,changeRender] = useState(true);
+    const changeCommentRender = () => {
+        changeRender(!renderCommentComponent)
+    }    
+     
     const reff = doc(db, "posts", id)
     const [imageUrl,setImageUrl] = useState(String);
 
@@ -45,7 +53,8 @@ export default function DisplayPost(props: any) {
     useEffect( ()=> {
         getLikes()
          
-    },[])
+    },[props.id])
+
     
      
 
@@ -131,32 +140,35 @@ export default function DisplayPost(props: any) {
     }
     useEffect(()=>{
         getUrl();
-    },[] )
+    },[props.id])
     
-    console.log();
-
+   
     return(
         <div   className="Post">
             <div className="TopBar">
                 
-                    <div className="a dp">
-                        {/* <img src="" alt="dp" /> */}
-                        &#128078;
+                    <div className="a OthersProfile">
+                        <OthersProfile  id={userId}  /> 
+                         
                     </div>
-                    <div className="a topDetail">
-                        <div className=" UserName">
-                            @{username}
-                                                                
-                        </div>
-                        <div className=" title">{ title} </div>
+                   
+                    <div className="UserName">
+                       <p>&nbsp;{username}</p> 
+                                                            
                     </div>
+
+                   
                  
                 <div className="rightTop">
-                    {userId !== user?.uid &&  
-                                <Followers FollowId={ userId } userName={ username }  globalFollowersChange = {props. globalFollowersChange }/>
+                    {userId !== user?.uid ?  
+                                <Followers FollowId={ userId } userName={ username }  globalFollowersChange = {props. globalFollowersChange }/>:
+                                 <DeletePost  PostId={id} updateHomePage = {updateHomePage} getImageId = {getImageId} removePost = {removePost}/>
+
                             }  
                 </div>
             </div>
+            
+             <p className="title">{title}</p> 
             {imageUrl && 
                 <img src={imageUrl}   className="PostImage" />
             }
@@ -167,17 +179,16 @@ export default function DisplayPost(props: any) {
                                 <div className="likeButton"><button  className="likeIcon" onClick={hasUserLiked?  removeLike:addLike}>{!hasUserLiked? <i className="fa-regular fa-heart"></i> : <i className="fa-solid fa-heart"></i>} </button></div>
                             
                                 {likesCount  != null && 
-                                <div className="likes">likes:{ likesCount.length}</div>
+                                <div className="likes">&nbsp;{likesCount.length}&nbsp;like{likesCount.length > 1 && <>s</>}</div>
                                }
                     </div>
                  <div className="CommentElement">
-                       <Comment postId={id} showWriteComment={false}/>
+                       <Comment postId={id} showWriteComment={false}  changeRender = {changeCommentRender} CurrentStateREnder = {renderCommentComponent}/>
                 </div>
             </div>
-            {userId == user?.uid && <DeletePost  PostId={id} updateHomePage = {updateHomePage} getImageId = {getImageId} />}
-            <div className="description"> { description}</div>
-            <Comment postId={id} showWriteComment={true}/>
-             <hr/>
+            <div className="descript">{description} this is description</div>
+            <Comment postId={id} showWriteComment={true}  changeRender = {changeCommentRender} CurrentStateREnder = {renderCommentComponent}/>
+
         </div>
     )
 }

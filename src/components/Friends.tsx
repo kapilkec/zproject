@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../config/firebase";
 import Followers from "./Followers";
+import OthersProfile from "./OthersProfile";
+import "../Styles/Friends.css"
 
 interface Friends{
     FriendId: String;
@@ -46,16 +48,16 @@ export default function Friends () {
     return(
         <div>
 
-            Following {friends?.length}
+            Followers {friends?.length}
             <hr></hr>
             <div className="friendsList">
                 {friends?.map( (ob) => {
                     return(
-
-                        <div onClick={displayProfile}>
+                       
+                        <div className="friend">
+                           <div className="Profile1">  <OthersProfile id={ob.FriendId}/>
+                        </div>
                             {ob.FriendName}
-                            
-                            
                         </div> 
                     )
                     

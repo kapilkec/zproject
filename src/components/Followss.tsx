@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../config/firebase";
 import Followers from "./Followers";
+import OthersProfile from "./OthersProfile";
 
 interface Followers{
     FollowerId: String;
@@ -23,7 +24,7 @@ export default function Followss () {
               const temp = followers?.filter((e) => {
                 return e.FollowerId == user?.uid
               })
-              console.log(getFollowersList.Followers)
+            //   console.log(getFollowersList.Followers)
          }
         else{
          console.log("no data")
@@ -43,6 +44,7 @@ export default function Followss () {
                     return(
 
                         <div>
+                            <OthersProfile id={ob.FollowerId}/>
                             {ob.FollowerName}
                             <hr></hr>
                         </div>

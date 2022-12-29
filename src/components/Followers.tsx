@@ -3,7 +3,9 @@ import { useEffect, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../config/firebase";
 import { Context } from "../Pages/Main";
+import { Context2 } from "../App"
 import { useContext } from "react"
+import "../Styles/Followers.css"
 
 interface Props{
     FollowId: String;
@@ -18,16 +20,20 @@ interface Followers{
 
 export default function Followers(props:Props){
     
+
+
     const [user] = useAuthState(auth);
     const [followers,updateFollowers] = useState<Followers[] | null>(null)
     const [ Following, changeFollow] = useState(false);
     const FollowRef = doc(db, "userDetails",user? user.uid : "unknownuser")
     const FriendsRef = doc(db, "userDetails", props.FollowId+"")
-      
+    //context for profile details
+    const userDetailFromContext = useContext(Context2)
+
     const t = useContext(Context)
     useEffect( () => {
         updateFollowers(t)
-        console.log(t)
+      
     },[])
     
     useEffect( () => {
@@ -42,6 +48,16 @@ export default function Followers(props:Props){
         console.log("``````")
         console.log(followers)
         const newFollowers = followers ? [...followers, obj]  : [obj]
+
+        const flw = userDetailFromContext?.Userinfo.followers;
+        const post = userDetailFromContext?.Userinfo.posts;
+        const ob = {
+            following:newFollowers.length,
+            followers:flw,
+            posts:post,
+        }
+        userDetailFromContext?.updateUserInfo(ob)
+
         updateFollowers(newFollowers )
         props.globalFollowersChange(newFollowers)
         await updateDoc(FollowRef, {
@@ -56,6 +72,14 @@ export default function Followers(props:Props){
     }
 
     const addFollowers = async ()=> {
+        if(!user){
+            alert("login to continue");
+            return;
+        }
+        
+        
+
+
         addFriend()
         changeFollow(true)
         const postRef = doc(db,"userDetails",user? user.uid: "unknown")
@@ -81,7 +105,7 @@ export default function Followers(props:Props){
         }
     }
     //friends add :: start; any
-    const updateFriends =async (lst : any) => {
+    const updateFriends = async (lst : any) => {
         
         const obj =  {
             FriendId: user?.uid,
@@ -150,7 +174,14 @@ export default function Followers(props:Props){
         const res = followers?.filter( (ob) => {
            return  ob.FollowerId !== props.FollowId
         })
-        console.log(res)
+        const flw = userDetailFromContext?.Userinfo.followers;
+        const post = userDetailFromContext?.Userinfo.posts;
+        const ob = {
+            following: res && res.length,
+            followers: flw,
+            posts: post,
+        }
+        userDetailFromContext?.updateUserInfo(ob)
         updateFollowers(res as any)
         changeFollow(false)
         props.globalFollowersChange(res)
@@ -170,7 +201,7 @@ export default function Followers(props:Props){
     return(
         <div>
              {!Following  ?
-                 <button onClick={addFollowers}>Follow </button>: <button onClick={unfollow}>unFollow </button>
+                 <button className="FollowButton" onClick={addFollowers}>Follow </button>: <button className="FollowButton" onClick={unfollow}>unfollow </button>
              } 
 
         </div>

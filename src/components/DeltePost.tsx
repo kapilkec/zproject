@@ -1,12 +1,13 @@
 import { db } from "../config/firebase"
 import { collection,doc, query, where,  deleteDoc } from "firebase/firestore";
 import { getStorage, ref, deleteObject } from "firebase/storage";
-
+import "../Styles/DeltePost.css"
   
 interface Postid{
     PostId:string;
     updateHomePage:Function
     getImageId:String
+    removePost:Function
 
      
 }
@@ -22,9 +23,15 @@ export const DeletePost = (props :Postid) => {
         
         console.log("delete post called");
         if ( confirmBox){
+            
+            props.removePost(props.PostId);
             await deleteDoc (doc(db, "posts", props.PostId)).then(async ()=>{
-               
-                deleteImage();
+                // window.location.reload();
+                await deleteImage().then( ()=> {
+                   
+                //    window.location.reload();
+                });
+                
             }               
             )
             
@@ -51,6 +58,6 @@ export const DeletePost = (props :Postid) => {
         });
     }
     return(
-        <button onClick={deletePost}>Delete Post</button>
+        <button className="DeletePostButton"onClick={deletePost}>Delete Post&nbsp;</button>
     )
 }

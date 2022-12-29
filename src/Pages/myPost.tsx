@@ -31,9 +31,9 @@ export default function MyPost() {
     },[user])
      
     return(
-        <div style={{textAlign:"center"}}>  
+        <div >  
         { Myposts?.map((post) => (
-                    <Post   {...post}/>
+                    <Post {...post}/>
             )) }
         </div>
     

@@ -9,12 +9,14 @@ import { boolean } from "yup";
 import { useForm } from "react-hook-form";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import ProfilePic from "./ProfilePic";
-import { render } from "@testing-library/react";
+import Login from "../Pages/Login";
+import { Context2 } from "../App";
+import { useContext } from "react"
 
 export default function Navbar () {
      
     const  [user] = useAuthState(auth);
-    
+    const userInfoFromContext = useContext(Context2);
 
     const [userid, setuserId]  = useState<String | null>()
     const signUserOut = async () =>{
@@ -25,7 +27,7 @@ export default function Navbar () {
         console.log("ar"+user?.uid);
         setuserId(user?.uid)
     },[user]);
-    
+   
      
     return(
         
@@ -43,16 +45,16 @@ export default function Navbar () {
                             <span className="UserId">@{user?.displayName}</span>
                             </> } 
                         <div className="UserDetails">
-                            <div className="Posts"><span>20</span><br></br><span className="name">Posts</span></div>
-                            <div className="Following"><span>20</span><br></br><span className="name">Following</span></div>
-                            <div className="Followers"><span>20</span><br></br><span className="name">Followers</span></div>
-
+                            <div className="Postse"><span>{userInfoFromContext && userInfoFromContext.Userinfo ? userInfoFromContext.Userinfo.posts+"": 0}</span><br></br><span className="name">Posts</span></div>
+                            <div className="Following"><span>{userInfoFromContext && userInfoFromContext.Userinfo? userInfoFromContext.Userinfo.following+"":0}</span><br></br><span className="name">Following</span></div>
+                            <div className="Followers"><span>{userInfoFromContext && userInfoFromContext.Userinfo? userInfoFromContext.Userinfo.followers+"":0}</span><br></br><span className="name">Followers</span></div>
+ 
                         </div>
                     </div>
                     <div className="Elements">
                       <NavLink to ="/" ><i className="fa-solid fa-house"></i>&nbsp;&nbsp;&nbsp;&nbsp;Feed</NavLink>  
 
-                    {!user ? (  <NavLink to = "login">Login</NavLink>    ):
+                    {!user ? (   <Login/>    ):
                              (   <NavLink to = "createPost"><i className="CreatePostIcon fa-solid fa-square-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;CreatePosts</NavLink> )
                     }
                     {user &&  <NavLink to ="profile"   className={({ isActive }) => (isActive ? 'active' : 'inactive')} ><i className="fa-solid fa-user "></i>&nbsp;&nbsp;&nbsp;&nbsp;Account</NavLink> }

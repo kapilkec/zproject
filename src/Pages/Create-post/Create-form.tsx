@@ -51,6 +51,7 @@ export default function CreateForm() {
         {
             title: yup.string().required("You must add a title"),
             description : yup.string().required("You must add a description"),
+            
         }
     )
     const { register, handleSubmit, formState: { errors}} = useForm<CreateFormData>({
@@ -59,6 +60,10 @@ export default function CreateForm() {
 
     const onsubmiting = async  (data: CreateFormData)=> {
         if(!user) return;
+        if(PostImage == null){
+            alert("Must add an image");
+            return;
+        }
           const timestamp =  user.uid+Date.now();
        console.log("time"+timestamp);
        await  addDoc (postRef, {

@@ -5,7 +5,8 @@ import Post from "../components/Post"
 import "../Styles/Main.css"
 import { createContext } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
-
+import { Context2 } from "../App";
+import { useContext } from "react"
 
  export interface Post{
     comments: String;
@@ -27,12 +28,27 @@ interface Followers{
 
 export const Context = createContext<Followers[] | null>(null);
 
- export default function Main(){
+ 
+ 
+ export default function Main( ){
+    //context
+    const userInfoFromContext = useContext(Context2);
 
     const [user] = useAuthState(auth);
     const postRef = collection(db, "posts")
+    
     const [posts, setPostLists] = useState<Post[] | null>([]);
-
+    const removePost = (id: string) => {
+        if(!posts) return;
+        console.log(posts);
+        const newArr = posts.filter(object => {
+            return object.id !== id;
+          });
+          console.log(newArr);
+          setPostLists(newArr);
+        //   console.log(posts);
+        
+    }
     //for followers list ::start
     const [followers,updateFollowers] = useState<Followers[] | null>(null)
     const FollowRef = doc(db, "userDetails",user? user.uid : "unknownuser")
@@ -46,23 +62,47 @@ export const Context = createContext<Followers[] | null>(null);
              const temp = followers?.filter((e) => {
                return e.FollowerId == user?.uid
              })
-             console.log(getFollowersList.Followers)
+             const data = await getDocs(postRef);
+         
+       
+            const postcount =  data.docs.filter( (doc) => {
+            return doc.data().userId == user?.uid
+            })
+
+             const ob = {
+                followers:getFollowersList.Friends.length,
+                following:getFollowersList.Followers.length,
+                posts:postcount.length,
+             }
+             userInfoFromContext?.updateUserInfo(ob)
+             
         }
        else{
         console.log("no data")
        }
     }
 
+    
+
     useEffect( () => {
         getFollowers()
+       
     },[user])
+
     //followers list :: end
 
     
     //get posts :: start
     const getPosts = async ()=> {
         const data = await getDocs(postRef);
-        // console.log(data.docs[0].data())
+        console.log('`````')
+       
+         const postcount =  data.docs.filter( (doc) => {
+           return doc.data().userId == user?.uid
+         })
+         
+
+        
         setPostLists(
             data.docs.map( (doc) => ({...doc.data(), id:doc.id }))  as Post[]
             );
@@ -72,6 +112,7 @@ export const Context = createContext<Followers[] | null>(null);
       useEffect( () => {
         getPosts();
     }, [])
+      
 
     //get posts :: end 
 
@@ -90,7 +131,8 @@ export const Context = createContext<Followers[] | null>(null);
                     likes={post.likes}
                     comments={post.comments}
                     updateHomePage = {getPosts}
-                    globalFollowersChange = { updateFollowers}/>
+                    globalFollowersChange = { updateFollowers}
+                    removePost = {removePost}/>
             )) }
             </Context.Provider>
         </div>
