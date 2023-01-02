@@ -1,31 +1,32 @@
 .Profile{
-    margin-left: 30%;
+    margin-left: 27%;
     margin-top: 40px;
     
 }
 .topBar{
     display: flex;
     margin-bottom: 40px;
-  
-  
-     /* justify-content: center; */
+    justify-content: center;
+   
     
 }
 .components{
-    
+    margin-bottom: 20px;
     display: flex;
-    gap:20px;
+    gap:70px;
     font-size: larger;
+    justify-content: center;
 }
 
 .profilePic{
     width: 150px;
     display: block;
+    text-align: center;
 }
-.profileDetails{
+.topBar .profileDetails{
     display: flex;
     gap:25px;
-     margin-top: 30px;
+    margin-top: 35px;
     
       
 }
@@ -34,4 +35,25 @@
     font-family: 'Fira Sans', sans-serif;
     font-size: medium;
 }
+ 
+#posts-click,#followers-click,#following-click{
+    cursor: pointer;
+}
+ 
+.borderBottom{
+    border-bottom: 3px solid black;
+
+}
+
+.profilePic .UserName{
+    font-family: 'Fira Sans', sans-serif;
+    display:block;
+    font-weight: 900;
+     
+}
+.profilePic .UserId{
+    font-family: 'Fira Sans', sans-serif;
+   
+}
+
  

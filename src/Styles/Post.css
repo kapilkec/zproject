@@ -1,8 +1,10 @@
 .Post{
    /* width:85%; */
-   background-color: rgb(243, 243, 243);
+   /* background-color: rgb(243, 243, 243); */
+   background-color: white;
+
     padding: 10px 20px;
-     
+     margin-top: 10px;
     margin-bottom: 10px;
     border-radius: 3%;
     font-family: 'Fira Sans', sans-serif;
@@ -10,7 +12,7 @@
 }
  
  
-.TopBar .a,.UserName{
+.TopBar .a,.TopBar .UserName{
     float: left;
     height: 50px;
     /* text-align: center; */
@@ -33,9 +35,9 @@
 }
 
 .PostImage{
-    width: 500px;
+    width: 570px;
     border-radius:3%;
-    height: 300px;
+    height: 350px;
 }
 
 .BottomElement{

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
  import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-
+import "./Styles/App.css"
  import Main from "./Pages/Main"
  import Login from './Pages/Login';
  import CreatePost from './Pages/Create-post/CreatePost';
@@ -32,10 +32,7 @@ export default function App() {
   const [UserInformation,updateUserInfo2] = useState<UserInfo|null>(null);
    
 
-  useEffect( ()=> {
-    console.log('```````') 
-    console.log(UserInformation)
-  },[UserInformation])
+ 
 
  
    

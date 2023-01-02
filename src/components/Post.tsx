@@ -131,7 +131,7 @@ export default function DisplayPost(props: any) {
                    await  getDownloadURL(item).then((url) => {
                             
                              setImageUrl(url);
-                             updateHomePage();
+                            //  updateHomePage();
                              
                     })
                 })
@@ -161,7 +161,7 @@ export default function DisplayPost(props: any) {
                  
                 <div className="rightTop">
                     {userId !== user?.uid ?  
-                                <Followers FollowId={ userId } userName={ username }  globalFollowersChange = {props. globalFollowersChange }/>:
+                                <Followers FollowId={ userId } userName={ username }   globalFollowersChange = {props.globalFollowersChange }/>:
                                  <DeletePost  PostId={id} updateHomePage = {updateHomePage} getImageId = {getImageId} removePost = {removePost}/>
 
                             }  

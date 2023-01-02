@@ -1,17 +1,40 @@
-.PostForm{
-
+.createPost{
     text-align: center;
-    height: 70%;
-    background-color:  rgb(255, 140, 0);
+    /* height: 70%; */
+    /* background-color: rgb(241, 239, 239); */
+    background-color: white;
+      /* margin-top: 10%; */
       
-     padding:10px 50px;
-     border-radius: 10px;
-     margin-left: 50%;
-     width: 500px;
-     margin-top: 20%;
-
-
+     border-radius: 25px;
+     /* margin-left: 200%; */
+     width: 150%;
+     margin-top: 30%;
+     text-align: center;
 }
+
+ 
+@media only screen  and (max-width: 1000px){
+    .createPost{
+        margin-left: 60%;
+        background-color: green;
+    }
+}
+
+/* .PostForm{ */
+
+    /* text-align: center; */
+    /* height: 70%; */
+    /* background-color: rgb(243, 243, 243); */
+
+      /* margin-top: 10%; */
+     /* padding:50px 50px;
+     border-radius: 15px;
+     margin-left: 70%; */
+     /* width: 100%; */
+     /* margin-top: 20%; */
+
+
+/* } */
 
 .PostForm .title ,.description, .submit{
     padding: 10px;
@@ -20,12 +43,88 @@
     /* height: 10px; */
     border:none;
     font-size: large;
+    background-color: rgb(241, 239, 239);
 }
 .PostForm .description {
     width: 80%;
     height: 50px;
+    resize: none;
     
 }
 .PostForm .submit{
     cursor: pointer;
+}
+
+.createPost .PostForm .inputFile{
+    border:none;
+}
+
+.createPost .PostForm .userNameProfile{
+    display: flex;
+    /* justify-content: space-between; */
+    background-color: rgb(219, 218, 218);
+    margin-bottom: 10px;
+    padding: 5px;
+    border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  
+}
+
+.createPost .PostForm .userNameProfile .profileCreatePost{
+    margin-top: 14px;
+    margin-right: 5px;
+    
+}
+
+.createPost .PostForm .userNameProfile  .rightEnd{
+    margin-left: auto;
+}
+
+.createPostSubmit  {
+    display: block;
+    background-color: rgb(219, 218, 218);
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.createPostSubmit .submit{
+   margin-top: 5px;
+
+}
+
+.PostForm .postImageLabel{
+    cursor: pointer;
+}
+
+.animate-charcter
+{
+   text-transform: uppercase;
+  background-image: linear-gradient(
+    -225deg,
+    #231557 0%,
+    #44107a 29%,
+    #567d64 67%,
+    #ffffff 100%
+  );
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 2s linear infinite;
+  display: inline-block;
+      font-size: 20px;
+}
+
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.userNameProfile .newPostName{
+    font-size: 20px;
 }

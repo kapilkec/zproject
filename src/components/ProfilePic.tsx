@@ -24,9 +24,10 @@ export default function ProfilePic(props:Props ) {
     const [ImageFound, SetImageFound] = useState(true);
     const {handleSubmit} = useForm()
     const [profilePic, setProfilePic] = useState<File | null>(null);
+    const [profilePicName, setProfilePicName]  = useState<String | null>(null);
     const setImage = (e: any)=>{
         {e && setProfilePic(e.target.files[0])}
-        console.log(e.target.files[0]);
+        setProfilePicName(e.target.files[0].name);
     }
 
 
@@ -60,7 +61,7 @@ export default function ProfilePic(props:Props ) {
             .then((url) => {
                     setImageUrl(url)
                     SetImageFound(true)
-                    console.log("image  url fetched"+url)
+                    console.log("image  url fetched" )
             })
             .catch( (er) => {
                 
@@ -70,28 +71,39 @@ export default function ProfilePic(props:Props ) {
     useEffect(()=>{
         getUrl();
     },[props.id] )
+
+    
     return(
-        
+    
         <div className=""> 
                      
-                      <img className="ProfilePic" src= { imageUrl ? imageUrl :  require('../Images/profile.jpg')} alt="user"  />
-                      {props.editProfile &&
-                            <div>
+                     <img className="ProfilePic" src= { imageUrl ? imageUrl :  require('../Images/profile.jpg')} alt="user"  />
+                     
+                     {props.editProfile &&
+                            <div className="editProfile">
+                            { !showUpdateProfile && 
+                                <div><button className="uploadProfile" onClick={uploadProfile}>Edit profile</button></div>
+                            
+                            }
                             {showUpdateProfile &&
                                 <form onSubmit={handleSubmit(setNewProfile)}>
-                                    <input type="file" onChange={setImage} />
-                                    <button >submit</button>
+                                        <label htmlFor="inputTag">
+                                         <div  className="uploadProfile fileName">Upload profile</div>
+                                          <input type="file" id="inputTag" onChange={setImage} style={{display:"none"}} accept="image/png, image/jpg, image/gif, image/jpeg" />
+                                         <span id="imageName">{profilePicName && profilePicName}</span>
+                                         <button>Upload</button>
+                                        </label>
+                                        
+                                     
+                                     
                                 </form>
                                 
                             }
 
-                            { !showUpdateProfile && 
-                                <div><button onClick={uploadProfile}>upload new profile</button></div>
-                            
-                            }
+                        
                             </div>
                         }
-                   
+
                 </div> 
         
     )

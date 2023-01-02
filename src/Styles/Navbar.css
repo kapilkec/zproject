@@ -1,6 +1,7 @@
 .topNav {
     overflow: hidden;
-     background-color: rgb(243, 243, 243);
+     /* background-color: rgb(243, 243, 243); */
+     background-color: white;
     width: 20%;
     /* padding: 0 16px; */
     font-size: large;

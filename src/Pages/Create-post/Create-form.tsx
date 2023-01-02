@@ -6,9 +6,10 @@ import {auth, db } from "../../config/firebase"
 import { useAuthState } from "react-firebase-hooks/auth"
 import "../../Styles/Create-form.css"
 import {  useNavigate } from "react-router-dom";
-import  {useState } from "react"
+import  {useEffect, useState } from "react"
 import { ref, uploadBytes, listAll, getDownloadURL} from "firebase/storage"
 import  { storage } from "../../config/firebase"
+import OthersProfile from "../../components/OthersProfile";
 
 
  
@@ -84,17 +85,38 @@ export default function CreateForm() {
     }
     //  console.log("timestamp" + Date.now())
     return(
-        <form className="PostForm" onSubmit={handleSubmit(onsubmiting)}>
-            <input  type="text" className="title" placeholder="Title..." {...register("title")}/>
-            <p>{errors.title?.message }</p>
-            <textarea  className="description" placeholder="Description.." {...register("description")} />
-            <p>{errors.description?.message }</p>
-            
-            <input type="file" onChange={ setImage } />
-             
-            <input  type="submit" className="submit"/>
-            
-        </form>
+        <div className="createPost">
+           
+            <form   className="PostForm" onSubmit={handleSubmit(onsubmiting)}>
+              
+                <div className="userNameProfile">
+                    {/* <div> */}
+                        <div className="profileCreatePost">
+                            <OthersProfile id={user?.uid+""}/>
+                        </div>
+                        <p className="newPostName">{user?.displayName?.split(" ")[0]}</p>
+
+                    {/* </div> */}
+                    
+                   
+                    <p className="rightEnd animate-charcter">Add new post</p>
+                </div>
+               
+                <input  type="text" className="title" placeholder="Title..." {...register("title")}/>
+                <p>{errors.title?.message }</p>
+                <textarea  className="description" placeholder="Description.." {...register("description")} />
+                <p>{errors.description?.message }</p>
+                <label className="postImageLabel" htmlFor="postImage">
+                <i className="fa fa-2x fa-camera"></i><span className="postImageName">{PostImage?.type}</span>
+                <input  id="postImage" className="inputFile"  style={{display:"none"}}  type="file" onChange={ setImage } />
+                </label>
+                <br></br>
+                <div className="createPostSubmit">
+                    <input  type="submit" className="submit"/>
+                </div>
+                
+            </form>
+        </div>
 
     )
 }

@@ -44,6 +44,7 @@ export default function Friends () {
      }
 
      //display profile :: end
+    
 
     return(
         <div>
@@ -55,13 +56,19 @@ export default function Friends () {
                     return(
                        
                         <div className="friend">
-                           <div className="Profile1">  <OthersProfile id={ob.FriendId}/>
-                        </div>
-                            {ob.FriendName}
+                            <div className="friendLeft">
+                                <span className="Profile1">  <OthersProfile id={ob.FriendId}/>
+                                </span>
+                                    <span className="profileName">{ob.FriendName}</span>
+                            </div>
+                            <div className="followCheck"> 
+                                <Followers FollowId={ob.FriendId}  userName={ob.FriendName}  />
+                            </div>
+                           
                         </div> 
                     )
                     
-                })}<hr></hr>
+                })} 
                 
             </div>
         </div>

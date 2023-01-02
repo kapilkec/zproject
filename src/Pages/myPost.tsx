@@ -2,7 +2,9 @@ import { collection, getDocs, query, where } from "firebase/firestore"
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Post from "../components/Post";
-import { db, auth} from "../config/firebase"
+import { db, auth} from "../config/firebase";
+
+
 export interface Post{
     id: any;
     description:String;
@@ -14,6 +16,8 @@ export interface Post{
 }
 
 export default function MyPost() {
+
+   
     const [Myposts, setMyPostLists] = useState<Post[] | null>([]);
    
     const [user] = useAuthState(auth);
@@ -29,11 +33,22 @@ export default function MyPost() {
     useEffect( () => {
         getData();
     },[user])
-     
+     //remove Post
+     const removePost = (id: string) => {
+        if(!Myposts) return;
+        console.log(Myposts);
+        const newArr = Myposts.filter(object => {
+            return object.id !== id;
+          });
+          console.log(newArr);
+          setMyPostLists(newArr);
+        //   console.log(posts);
+        
+    }
     return(
         <div >  
         { Myposts?.map((post) => (
-                    <Post {...post}/>
+                    <Post {...post} removePost={removePost}/>
             )) }
         </div>
     

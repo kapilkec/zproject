@@ -35,6 +35,11 @@ export default function Followss () {
          getFollowers()
      },[user])
      //followers list :: end
+
+      
+
+      
+     
     return(
         <div>
             Following {followers?.length}
@@ -43,11 +48,17 @@ export default function Followss () {
                 {followers?.map( (ob) => {
                     return(
 
-                        <div>
-                            <OthersProfile id={ob.FollowerId}/>
-                            {ob.FollowerName}
-                            <hr></hr>
+                        <div className="friend">
+                        <div className="friendLeft">
+                            <span className="Profile1">  <OthersProfile id={ob.FollowerId}/>
+                            </span>
+                                <span className="profileName">{ob.FollowerName}</span>
                         </div>
+                        <div className="followCheck"> 
+                            <Followers FollowId={ob.FollowerId}  userName={ob.FollowerName} updateFollowList={updateFollowers} />
+                        </div>
+                       
+                    </div> 
                     )
                      
                 })}

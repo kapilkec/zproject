@@ -4,6 +4,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../config/firebase";
 import { Context } from "../Pages/Main";
 import { Context2 } from "../App"
+import {ContextProfile,updateFollowersInProfile} from "../Pages/profile"
+
 import { useContext } from "react"
 import "../Styles/Followers.css"
 
@@ -11,6 +13,7 @@ interface Props{
     FollowId: String;
     userName:String;
     globalFollowersChange: Function;
+    
 }
 
 interface Followers{
@@ -18,10 +21,10 @@ interface Followers{
     FollowerName: String;
 }
 
-export default function Followers(props:Props){
+export default function Followers(props:any){
     
 
-
+   
     const [user] = useAuthState(auth);
     const [followers,updateFollowers] = useState<Followers[] | null>(null)
     const [ Following, changeFollow] = useState(false);
@@ -30,27 +33,33 @@ export default function Followers(props:Props){
     //context for profile details
     const userDetailFromContext = useContext(Context2)
 
-    const t = useContext(Context)
-    useEffect( () => {
-        updateFollowers(t)
-      
-    },[])
+    const mainContext = useContext(Context)
+    const ProfileContext = useContext(ContextProfile)
+    const profilePageFollowersCall = useContext(updateFollowersInProfile);
+  
     
     useEffect( () => {
-        updateFollowers(t)
-    },[t])
+        if(mainContext != null)
+             updateFollowers(mainContext)
+        else if (ProfileContext != null){
+        updateFollowers(ProfileContext)
+        }
+    },[mainContext,ProfileContext])
 
-    const updateFollower = async ()=> {
+    const updateFollower = async (docSnap:any)=> {
         const obj = {
             FollowerId: props.FollowId,
             FollowerName: props.userName
         }
-        console.log("``````")
-        console.log(followers)
-        const newFollowers = followers ? [...followers, obj]  : [obj]
+        //check follower already exist;
+        const finalFollowers = followers?.filter( (ob:any) => {
+            return ob.FollowerId !=  obj.FollowerId
+        })
+       
+        const newFollowers = finalFollowers ? [...finalFollowers, obj]  : [obj]
 
-        const flw = userDetailFromContext?.Userinfo.followers;
-        const post = userDetailFromContext?.Userinfo.posts;
+        const flw = userDetailFromContext?.Userinfo?.followers? userDetailFromContext.Userinfo.followers : 0 ;
+        const post = userDetailFromContext?.Userinfo?.posts? userDetailFromContext.Userinfo.posts : 0;
         const ob = {
             following:newFollowers.length,
             followers:flw,
@@ -59,12 +68,18 @@ export default function Followers(props:Props){
         userDetailFromContext?.updateUserInfo(ob)
 
         updateFollowers(newFollowers )
-        props.globalFollowersChange(newFollowers)
+      
         await updateDoc(FollowRef, {
-            "Followers":newFollowers 
+            "Followers":newFollowers ,
+             
+
              
         }).then( () => {
             console.log("followers added")
+            console.log(newFollowers)
+            addFriend()
+            props.globalFollowersChange && props.globalFollowersChange(newFollowers)
+           profilePageFollowersCall && profilePageFollowersCall();
             
         }).catch( (err) => {
             console.log("error in adding followers"+err)
@@ -76,16 +91,20 @@ export default function Followers(props:Props){
             alert("login to continue");
             return;
         }
-        
-        
-
-
-        addFriend()
+        let flg = 0;
+        followers?.map((ob) => {
+            if(ob.FollowerId == props.FollowerId){
+                
+                flg = 1;return;
+            }
+        })
+        if(flg == 1) return;
+       
         changeFollow(true)
         const postRef = doc(db,"userDetails",user? user.uid: "unknown")
         const docSnap = await getDoc(postRef);
         if(docSnap.exists()){
-            updateFollower();
+            updateFollower(docSnap);
         }
         else{
             
@@ -94,10 +113,15 @@ export default function Followers(props:Props){
                 FollowerName: props.userName} 
             ]
             await setDoc(doc(db, "userDetails", user? user.uid: "unknown"), {
-                "Followers":temp
+                "Followers":temp,
+               
+                 
               }).then( ()=> {
-                console.log("new updation")
-                props.globalFollowersChange(temp)
+                addFriend()
+                console.log("new updation in followers")
+                profilePageFollowersCall && profilePageFollowersCall();
+
+                props.globalFollowersChange && props.globalFollowersChange(temp)
               }).catch( (err) => {
                 console.log("errir un new updation"+err)
               })
@@ -109,39 +133,46 @@ export default function Followers(props:Props){
         
         const obj =  {
             FriendId: user?.uid,
-            FriendName: user?.displayName?.split(" ")[0]
+            FriendName: user?.displayName,
         } 
-        console.log("``````")
-        console.log(lst) 
         
+        //checking whether the friend already exist
+        
+        const  finalLst = lst?.filter( (ob:any) => {
+            return ob.FriendId !== obj.FriendId
+        })
          
         await updateDoc(FriendsRef, {
-            "Friends": lst? [...lst,obj] : [obj]
+            "Friends": finalLst? [...finalLst,obj] : [obj]
              
         }).then( () => {
             console.log("friends added")
-            
+            profilePageFollowersCall && profilePageFollowersCall();
+           
         }).catch( (err) => {
             console.log("error in adding friends"+err)
         })
     }
     const addFriend =async () => {
+        console.log("add Friend called");
         const postRef = doc(db,"userDetails",props.FollowId+"")
         const docSnap = await getDoc(postRef);
+
         if(docSnap.exists()){
-            
-             updateFriends(docSnap.data().Friends)
+             
+              updateFriends(docSnap.data().Friends)
         }
         else{
             
             const temp = [
                  {FriendId: user?.uid,
-                FriendName: user?.displayName?.split(" ")[0]} 
+                FriendName: user?.displayName} 
             ]
             await setDoc(doc(db, "userDetails", props.FollowId+""), {
                 "Friends":temp
               }).then( ()=> {
                 console.log("new updation in friends")
+                
               
               }).catch( (err) => {
                 console.log("errir un new updation in friends"+err)
@@ -157,10 +188,10 @@ export default function Followers(props:Props){
             let t = false;
         if(followers?.find( (e) => e.FollowerId ===  props.FollowId)){
             t = true
+           
         }
         changeFollow(t)
-        
-        console.log(t)
+ 
          
     }
     useEffect( ( ) => {
@@ -170,10 +201,35 @@ export default function Followers(props:Props){
    
 
     const unfollow =async () => {
-        
+       
         const res = followers?.filter( (ob) => {
            return  ob.FollowerId !== props.FollowId
         })
+        const postRef = doc(db,"userDetails",props.FollowId+"")
+        const docSnap = await getDoc(postRef);
+        if(docSnap.exists() && docSnap.data().Friends && docSnap.data().Friends.length > 0){
+           const t =  docSnap.data().Friends.filter( (o:any) => {
+                return o.FriendId !== user?.uid
+           })
+
+           await updateDoc(FriendsRef, {
+            "Friends":t
+             
+        }).then( () => {
+            console.log("friends removed")
+            profilePageFollowersCall && profilePageFollowersCall();
+           
+        }).catch( (err) => {
+            console.log("error in removing friends"+err)
+        })
+
+      }
+
+        updateFollowers(res as Followers[])
+        if(props.updateFollowList ){
+
+            props.updateFollowList(res);
+        }
         const flw = userDetailFromContext?.Userinfo.followers;
         const post = userDetailFromContext?.Userinfo.posts;
         const ob = {
@@ -182,16 +238,20 @@ export default function Followers(props:Props){
             posts: post,
         }
         userDetailFromContext?.updateUserInfo(ob)
-        updateFollowers(res as any)
+       
         changeFollow(false)
-        props.globalFollowersChange(res)
+       
         await updateDoc(FollowRef, {
             "Followers":res
              
         }).then( () => {
-            console.log("followers added")
+            console.log("un followed")
+            console.log(res);
+            props.globalFollowersChange && props.globalFollowersChange(res)
+            profilePageFollowersCall && profilePageFollowersCall();
+
         }).catch( (err) => {
-            console.log("error in adding followers"+err)
+            console.log("error in  unfollowers"+err)
         })
 
 

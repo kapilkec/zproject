@@ -5,3 +5,13 @@
     width: 100px;
     height: 100px;
 }
+
+.editProfile .uploadProfile{
+    border-radius: 25px;
+    border:0.3px solid  rgb(87, 87, 87);
+    background-color: rgb(87, 87, 87);
+    color: white;
+    margin-top: 12px;
+    cursor: pointer;
+    padding:4px;
+}

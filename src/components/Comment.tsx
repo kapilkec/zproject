@@ -44,7 +44,7 @@ export const Comment = (props:  postIdforComment) => {
         
         const getCommentsList = docSnap.data() 
         const commentList = (getCommentsList && getCommentsList.comments)
-        console.log("kuykuy")
+       
         updatecommentsCount( commentList)
         
         

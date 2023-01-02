@@ -7,6 +7,8 @@ import { createContext } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { Context2 } from "../App";
 import { useContext } from "react"
+import CreateForm from "./Create-post/Create-form"
+import ProfilePic from "../components/ProfilePic"
 
  export interface Post{
     comments: String;
@@ -31,7 +33,7 @@ export const Context = createContext<Followers[] | null>(null);
  
  
  export default function Main( ){
-    //context
+    //context to update navbar
     const userInfoFromContext = useContext(Context2);
 
     const [user] = useAuthState(auth);
@@ -49,6 +51,7 @@ export const Context = createContext<Followers[] | null>(null);
         //   console.log(posts);
         
     }
+    
     //for followers list ::start
     const [followers,updateFollowers] = useState<Followers[] | null>(null)
     const FollowRef = doc(db, "userDetails",user? user.uid : "unknownuser")
@@ -70,9 +73,9 @@ export const Context = createContext<Followers[] | null>(null);
             })
 
              const ob = {
-                followers:getFollowersList.Friends.length,
-                following:getFollowersList.Followers.length,
-                posts:postcount.length,
+                followers:getFollowersList?.Friends?  getFollowersList.Friends.length : 0,
+                following:getFollowersList?.Followers? getFollowersList.Followers.length : 0,
+                posts:postcount? postcount.length : 0,
              }
              userInfoFromContext?.updateUserInfo(ob)
              
@@ -119,22 +122,41 @@ export const Context = createContext<Followers[] | null>(null);
      
     return(
         <div className="MainPage">
-            <Context.Provider value = { followers }>
-            { posts?.map((post) => (
+            <div className="allPosts">
+                {/* <p className="MainPageHeading">Feeds</p> */}
+                <Context.Provider value = { followers }>
+                { posts?.map((post) => (
 
-                    <Post    id={post.id}
-                    description={post.description}
-                    title = {post.title}
-                    userId = {post.userId}
-                    username={ post.username}
-                    getImageId={post.getImageId}
-                    likes={post.likes}
-                    comments={post.comments}
-                    updateHomePage = {getPosts}
-                    globalFollowersChange = { updateFollowers}
-                    removePost = {removePost}/>
-            )) }
-            </Context.Provider>
+                        <Post    id={post.id}
+                        description={post.description}
+                        title = {post.title}
+                        userId = {post.userId}
+                        username={ post.username}
+                        getImageId={post.getImageId}
+                        likes={post.likes}
+                        comments={post.comments}
+                        updateHomePage = {getPosts}
+                        globalFollowersChange = { updateFollowers}
+                        removePost = {removePost}/>
+                )) }
+                </Context.Provider>
+            </div>
+            <div className="sideBarPost">
+                <div className="createPostMain" >
+                     <CreateForm/>
+                </div>
+                <div className="MiniProfile">
+                     <div className="miniProfilePic">
+                         <ProfilePic editProfile={false} id = {user?.uid+""}/>
+                     </div>
+                     <div className="UserDetails">
+                             <div className="Following"><span>{userInfoFromContext && userInfoFromContext.Userinfo? userInfoFromContext.Userinfo.following+"":0}</span><br></br><span className="name">Following</span></div>
+                            <div className="Followers"><span>{userInfoFromContext && userInfoFromContext.Userinfo? userInfoFromContext.Userinfo.followers+"":0}</span><br></br><span className="name">Followers</span></div>
+ 
+                     </div>
+                </div>
+            </div>
+
         </div>
     )
 }
