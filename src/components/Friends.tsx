@@ -47,7 +47,7 @@ export default function Friends () {
     
 
     return(
-        <div>
+        <div className="FriendsAll">
 
             Followers {friends?.length}
             <hr></hr>

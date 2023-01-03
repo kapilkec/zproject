@@ -38,7 +38,7 @@ export default function App() {
    
 
   return (
-    <div className="App" style={{display:"flex"}}>
+    <div className="App"  >
     
       <Context2.Provider value = {{Userinfo:UserInformation as any,updateUserInfo:updateUserInfo2}}>
           < Router>

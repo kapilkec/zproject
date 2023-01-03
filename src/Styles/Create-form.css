@@ -1,22 +1,29 @@
 .createPost{
     text-align: center;
-    /* height: 70%; */
-    /* background-color: rgb(241, 239, 239); */
-    background-color: white;
-      /* margin-top: 10%; */
-      
+    
+    background-color: rgb(243,243,243);
+     
      border-radius: 25px;
-     /* margin-left: 200%; */
-     width: 150%;
-     margin-top: 30%;
+    
      text-align: center;
 }
 
+.PostForm{
+    margin-top: 120px;
+    /* width: 120%; */
+    width: 400px;
+    align-items: center;
+    /* background-color: rgb(243,243,243); */
+    background-color: rgb(219, 216, 216);
+    border-radius: 30px;
+}
  
-@media only screen  and (max-width: 1000px){
-    .createPost{
-        margin-left: 60%;
-        background-color: green;
+@media only screen  and (max-width: 395px){
+    .PostForm{
+        width:93%;
+    }
+    .createPost .PostForm .userNameProfile .rightEnd{
+        width : 100%;
     }
 }
 
@@ -43,7 +50,7 @@
     /* height: 10px; */
     border:none;
     font-size: large;
-    background-color: rgb(241, 239, 239);
+    /* background-color: rgb(241, 239, 239); */
 }
 .PostForm .description {
     width: 80%;
@@ -66,7 +73,8 @@
     margin-bottom: 10px;
     padding: 5px;
     border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
+    border-top-right-radius: 25px;
+    border:1px solid black;
   
 }
 
@@ -85,6 +93,8 @@
     background-color: rgb(219, 218, 218);
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
+    border: 1px solid black;
+
 }
 
 .createPostSubmit .submit{

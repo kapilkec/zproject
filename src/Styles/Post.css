@@ -1,11 +1,11 @@
 .Post{
-   /* width:85%; */
+   /* width:96%; */
    /* background-color: rgb(243, 243, 243); */
    background-color: white;
 
     padding: 10px 20px;
      margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     border-radius: 3%;
     font-family: 'Fira Sans', sans-serif;
     font-weight: 600;
@@ -35,7 +35,7 @@
 }
 
 .PostImage{
-    width: 570px;
+    width: 550px;
     border-radius:3%;
     height: 350px;
 }
@@ -55,6 +55,7 @@
     font-size:25px;
     padding:0;
     cursor: pointer;
+    background-color: white;
 }
 .LikeElement{
     display: flex;

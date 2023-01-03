@@ -72,7 +72,7 @@ export default function Profile(){
     //for highlight in border components
     const setActiveLists = ["posts-click","followers-click","following-click"]
     const changeActive = (i:string) => {
-        console.log("j")
+         
         let temp = document.getElementById(i)
         temp?.classList.add("borderBottom")
         
@@ -85,7 +85,7 @@ export default function Profile(){
      
     return(
 
-        <div className="Profile">
+        <div className={currentElement == 0? "Profile":"Profile changeBackground"}>
            <ContextProfile.Provider value = { followers }>
             <updateFollowersInProfile.Provider  value={getFollowers}>
 
@@ -114,13 +114,21 @@ export default function Profile(){
                 </div>
                 <div className="posts"> 
                     { currentElement == 0 &&
-                        <MyPost/>
+                        <div className="postsComponent">
+                             <MyPost/>
+                        </div>
+                       
                     }
                     { currentElement == 1 &&
-                        <Friends/>
+                        <div className="followersComponent">
+                              <Friends/>
+                        </div>                     
+                        
                     }
                     { currentElement == 2 &&
-                        <Followss/>
+                        <div className="followingComponent">
+                             <Followss/>
+                        </div>                        
                     }
 
                 </div>

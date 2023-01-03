@@ -186,7 +186,7 @@ export default function DisplayPost(props: any) {
                        <Comment postId={id} showWriteComment={false}  changeRender = {changeCommentRender} CurrentStateREnder = {renderCommentComponent}/>
                 </div>
             </div>
-            <div className="descript">{description} this is description</div>
+            <div className="descript">{description}</div>
             <Comment postId={id} showWriteComment={true}  changeRender = {changeCommentRender} CurrentStateREnder = {renderCommentComponent}/>
 
         </div>

@@ -64,6 +64,10 @@ export const Comment = (props:  postIdforComment) => {
   
     const uploadComment = async (e: any)=>{
         console.log("updating comment");
+        if(!user) {
+            alert("login to continue");
+            return;
+        }
         e.preventDefault();
         if(newcomment.length == 0) return
         const obj = {

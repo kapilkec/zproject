@@ -79,7 +79,9 @@ export default function CreateForm() {
         alert("post added succesfully");
         alert("image uploading please wait a moment")
         await uploadImage(timestamp as string);
+        
          navigate("/");
+         window.location.reload();
         
        })
     }

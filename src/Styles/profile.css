@@ -1,8 +1,34 @@
 .Profile{
-    margin-left: 27%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
     margin-top: 40px;
     
+    
 }
+.changeBackground{
+    height: 94vh;
+}
+@media (max-width:1030px){
+    .Profile{
+        margin-left: auto;
+        margin-top: 82px;
+        margin-right: auto;
+        
+    }
+
+}
+@media (max-width:500px){
+     .posts .postsComponent{
+        width: 342px;
+        margin-left: auto;
+        margin-right: auto;
+        
+    }
+    
+}
+
+ 
 .topBar{
     display: flex;
     margin-bottom: 40px;

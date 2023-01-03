@@ -141,7 +141,7 @@ export const Context = createContext<Followers[] | null>(null);
                 )) }
                 </Context.Provider>
             </div>
-            <div className="sideBarPost">
+            {/* <div className="sideBarPost">
                 <div className="createPostMain" >
                      <CreateForm/>
                 </div>
@@ -149,13 +149,14 @@ export const Context = createContext<Followers[] | null>(null);
                      <div className="miniProfilePic">
                          <ProfilePic editProfile={false} id = {user?.uid+""}/>
                      </div>
-                     <div className="UserDetails">
-                             <div className="Following"><span>{userInfoFromContext && userInfoFromContext.Userinfo? userInfoFromContext.Userinfo.following+"":0}</span><br></br><span className="name">Following</span></div>
-                            <div className="Followers"><span>{userInfoFromContext && userInfoFromContext.Userinfo? userInfoFromContext.Userinfo.followers+"":0}</span><br></br><span className="name">Followers</span></div>
+                     <div className="miniProfileUserDetails">
+                             
+                             <div className="Following"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userInfoFromContext && userInfoFromContext.Userinfo? userInfoFromContext.Userinfo.following+"":0}</span><br></br><span className="name">Following</span></div>
+                            <div className="Followers"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{userInfoFromContext && userInfoFromContext.Userinfo? userInfoFromContext.Userinfo.followers+"":0}</span><br></br><span className="name">Followers</span></div>
  
                      </div>
                 </div>
-            </div>
+            </div> */}
 
         </div>
     )

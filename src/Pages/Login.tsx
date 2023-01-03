@@ -19,6 +19,7 @@ export default  function Login () {
         const result = await  signInWithPopup(auth,provider);
         
         console.log(result);
+       
         navigate("/");
     }
     return(
