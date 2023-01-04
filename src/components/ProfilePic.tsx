@@ -45,6 +45,7 @@ export default function ProfilePic(props:Props ) {
             ()=>{
 
                 console.log("image uploaded");
+                window.location.reload();
             }
         ).catch( (er) => {
             console.log("error in profile upload"+er)

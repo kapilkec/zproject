@@ -25,6 +25,9 @@
     .createPost .PostForm .userNameProfile .rightEnd{
         width : 100%;
     }
+    .PostForm .title{
+        width: 150px;
+    }
 }
 
 /* .PostForm{ */
