@@ -8,12 +8,7 @@ import { getStorage } from "firebase/storage"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDKPdTVPxd0mca7NgwZSvu8IzVK9jYBa4k",
-  authDomain: "socialmedia-3d540.firebaseapp.com",
-  projectId: "socialmedia-3d540",
-  storageBucket: "socialmedia-3d540.appspot.com",
-  messagingSenderId: "742510255817",
-  appId: "1:742510255817:web:ca58abb1fd7725ac537718"
+  //your API
 };
 
 // Initialize Firebase
